@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Converter</string>
+    <string name="title_home">Conversion</string>
+    <string name="title_dashboard">About</string>
+    <string name="developed_by">Developed by Vadim Fedchuk</string>
+    <string name="disclaimer_sample">Sample used to practice kotlin, MVVM, DAGGER2, RxJava, Room.</string>
+    <string name="currency_converter">Currency Converter</string>
+    <string name="currency">Currency Converter</string>
+    <string name="convert">Convert</string>
+    <string name="to">To</string>
+    <string name="hint_value">1.00</string>
+
+</resources>
