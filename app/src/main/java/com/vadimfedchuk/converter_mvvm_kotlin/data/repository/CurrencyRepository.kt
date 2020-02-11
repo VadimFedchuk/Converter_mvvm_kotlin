@@ -1,14 +1,16 @@
 package com.vadimfedchuk.converter_mvvm_kotlin.data.repository
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.vadimfedchuk.converter_mvvm_kotlin.R
 import com.vadimfedchuk.converter_mvvm_kotlin.data.remote.CurrencyResponse
 import com.vadimfedchuk.converter_mvvm_kotlin.data.remote.RemoteCurrencyDataSource
 import com.vadimfedchuk.converter_mvvm_kotlin.data.room.CurrencyEntity
 import com.vadimfedchuk.converter_mvvm_kotlin.data.room.RoomCurrencyDataSource
 import com.vadimfedchuk.converter_mvvm_kotlin.pojo.AvailableExchange
 import com.vadimfedchuk.converter_mvvm_kotlin.pojo.Currency
-import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class CurrencyRepository @Inject constructor(
     private val roomCurrencyDataSource: RoomCurrencyDataSource,
-    private val remoteCurrencyDataSource: RemoteCurrencyDataSource
+    private val remoteCurrencyDataSource: RemoteCurrencyDataSource,
+    private val context: Context
 ) : Repository {
 
     val allCompositeDisposable: MutableList<Disposable> = arrayListOf()
@@ -39,6 +42,7 @@ class CurrencyRepository @Inject constructor(
             .subscribe({ currencyList ->
                 mutableLiveData.value = transform(currencyList)
             }, {t: Throwable? ->
+                Toast.makeText(context, context.getString(R.string.error_load_data), Toast.LENGTH_SHORT).show()
                 t?.printStackTrace()
             })
         allCompositeDisposable.add(disposable)
@@ -60,8 +64,8 @@ class CurrencyRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if(it.isSuccess) mutableLiveData.value = transform(it)
-                else throw Throwable("CurrencyRepository -> on Error occurred")
             }, { throwable: Throwable? -> throwable?.printStackTrace()
+                Toast.makeText(context, context.getString(R.string.error_load_data), Toast.LENGTH_SHORT).show()
             })
         allCompositeDisposable.add(disposable)
         return mutableLiveData

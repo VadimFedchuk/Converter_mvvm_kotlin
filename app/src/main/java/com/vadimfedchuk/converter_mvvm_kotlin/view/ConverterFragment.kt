@@ -96,7 +96,7 @@ class ConverterFragment : Fragment() {
                 }
             })
         } else {
-            Toast.makeText(activity, "Could not convert.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, getString(R.string.error_convert), Toast.LENGTH_SHORT).show()
         }
     }
 
